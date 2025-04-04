@@ -1,6 +1,6 @@
-import 'package:Trendify/screen/shared/shared.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/api_service/base_api.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +24,7 @@ class CustomPaymentPageState extends State<CustomPaymentPage> {
       }
 
       final response = await http.post(
-        Uri.parse('$url/createpayment'),
+        Uri.parse('${ApiService.baseUrl}/createpayment'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "email": "newcustomer@gmail.com",
@@ -43,11 +43,11 @@ class CustomPaymentPageState extends State<CustomPaymentPage> {
       final billingDetails = BillingDetails(
         address: Address(
           country: 'IN',
-          city: 'Chennai',
+          city: 'Gurgaon',
           line1: 'addr1',
           line2: 'addr2',
-          postalCode: '680681',
-          state: 'kerala',
+          postalCode: '122001',
+          state: 'Gurugram',
         ),
       );
 

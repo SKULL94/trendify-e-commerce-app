@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:Trendify/screen/login_register/register.dart';
 import 'package:Trendify/screen/shared/shared.dart';
 import 'package:Trendify/screen/shared/under_contruction.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/images.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -136,7 +137,7 @@ class LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: getHeight(context, 380),
                   child: RiveAnimation.asset(
-                    'assets/login_no_bg.riv',
+                    Images.riveLogin,
                     controllers: [_controller],
                     stateMachines: ['State Machine 1'],
                     onInit: (Artboard artboard) {

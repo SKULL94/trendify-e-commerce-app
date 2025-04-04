@@ -7,8 +7,9 @@ import 'package:Trendify/screen/products/categories_products_screen.dart';
 import 'package:Trendify/screen/products/searched_products_screen.dart';
 import 'package:Trendify/screen/products/single_product_screen.dart';
 import 'package:Trendify/screen/shared/shared.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/images.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +62,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           backgroundColor: Colors.white,
                           radius: getWidth(context, 20),
                           child: Image(
-                            image: const AssetImage('assets/trend.png'),
+                            image: const AssetImage(Images.trend),
                             width: getWidth(context, 30),
                           ),
                         ),
@@ -795,7 +796,7 @@ Widget loadingAnimation(BuildContext context) {
       SizedBox(
         height: getHeight(context, 400),
         child: rive.RiveAnimation.asset(
-          'assets/earth_loading.riv',
+          Images.earthLoading,
           stateMachines: ['Loading Final - State Machine 1'],
           onInit: (rive.Artboard artboard) {
             var controller = rive.StateMachineController.fromArtboard(

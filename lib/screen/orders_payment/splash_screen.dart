@@ -1,4 +1,4 @@
-import 'package:Trendify/utilis/custom_text.dart';
+import 'package:Trendify/utils/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class OrderStatusSplashScreen extends StatefulWidget {

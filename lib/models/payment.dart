@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:Trendify/screen/shared/shared.dart';
+import 'package:Trendify/api_service/base_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +14,7 @@ Future<String> initPaymentSheet(double amount) async {
       "amount": amount,
     };
     final response = await http.post(
-      Uri.parse('$url/createpayment'),
+      Uri.parse('${ApiService.baseUrl}/createpayment'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(reqBody),
     );

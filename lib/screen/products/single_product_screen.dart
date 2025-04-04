@@ -5,14 +5,16 @@ import 'package:Trendify/providers/product_provider.dart';
 import 'package:Trendify/providers/wish_list_provider.dart';
 import 'package:Trendify/screen/cart_wishlist/cart_screen.dart';
 import 'package:Trendify/screen/shared/shared.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+
+import '../../models/ratings.dart';
 
 class SingleProductScreen extends StatefulWidget {
   const SingleProductScreen({super.key, required this.id, this.isNew = false});
@@ -32,54 +34,6 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
   final List<String> _sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   final _reviewTextController = TextEditingController();
   double _rating = 0;
-
-  final List<Review> _reviews = [
-    Review(
-      id: 1,
-      userId: 1,
-      userName: 'Emily R.',
-      userImageUrl: 'https://randomuser.me/api/portraits/women/1.jpg',
-      reviewText:
-          'I love this product! It\'s so comfortable and the quality is amazing.',
-      rating: 5,
-    ),
-    Review(
-      id: 2,
-      userId: 2,
-      userName: 'David K.',
-      userImageUrl: 'https://randomuser.me/api/portraits/men/2.jpg',
-      reviewText:
-          'This product is okay, but it\'s not the best I\'ve ever used. The material is a bit cheap.',
-      rating: 2,
-    ),
-    Review(
-      id: 3,
-      userId: 3,
-      userName: 'Sophia L.',
-      userImageUrl: 'https://randomuser.me/api/portraits/women/3.jpg',
-      reviewText:
-          'I\'m so impressed with this product! The design is beautiful and it\'s really easy to use.',
-      rating: 5,
-    ),
-    Review(
-      id: 4,
-      userId: 4,
-      userName: 'Michael T.',
-      userImageUrl: 'https://randomuser.me/api/portraits/men/4.jpg',
-      reviewText:
-          'I\'ve been using this product for a few weeks now and I\'m really happy with it. The quality is great and it\'s really durable.',
-      rating: 4,
-    ),
-    Review(
-      id: 5,
-      userId: 5,
-      userName: 'Olivia W.',
-      userImageUrl: 'https://randomuser.me/api/portraits/women/5.jpg',
-      reviewText:
-          'I was a bit skeptical about this product at first, but it\'s really grown on me. The customer service is also really great.',
-      rating: 4,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -423,7 +377,7 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                           SizedBox(height: getHeight(context, 10)),
                           Column(
                             children:
-                                _reviews.map((review) {
+                                reviews.map((review) {
                                   return Padding(
                                     padding: EdgeInsets.only(
                                       bottom: getHeight(context, 16),
@@ -533,9 +487,9 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
                                     if (_reviewTextController.text.isNotEmpty &&
                                         _rating != 0) {
                                       setState(() {
-                                        _reviews.add(
+                                        reviews.add(
                                           Review(
-                                            id: _reviews.length + 1,
+                                            id: reviews.length + 1,
                                             userId: 1,
                                             userName: 'You',
                                             userImageUrl:
@@ -570,22 +524,4 @@ class _SingleProductScreenState extends State<SingleProductScreen> {
       },
     );
   }
-}
-
-class Review {
-  final int id;
-  final int userId;
-  final String userName;
-  final String userImageUrl;
-  final String reviewText;
-  final double rating;
-
-  Review({
-    required this.id,
-    required this.userId,
-    required this.userName,
-    required this.userImageUrl,
-    required this.reviewText,
-    required this.rating,
-  });
 }

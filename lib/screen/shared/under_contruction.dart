@@ -1,4 +1,5 @@
-import 'package:Trendify/utilis/custom_text.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/images.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
@@ -11,7 +12,7 @@ class UnderConstruction extends StatefulWidget {
 
 class _UnderConstructionState extends State<UnderConstruction> {
   late RiveAnimationController _controller;
-  String _currentAnimation = 'look_idle'; // Default animation
+  final String _currentAnimation = 'look_idle'; // Default animation
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _UnderConstructionState extends State<UnderConstruction> {
             child: RiveAnimation.asset(
               // 'assets/animated_login_character.riv',
               //'assets/login_screen_character.riv',
-              'assets/login_no_bg.riv',
+              Images.riveLogin,
               controllers: [_controller],
               stateMachines: ['State Machine 1'], // Add the state machine name
               onInit: (Artboard artboard) {
@@ -98,7 +99,7 @@ class _UnderContructionState extends State<UnderContruction> {
             child: RiveAnimation.asset(
               //'assets/login_no_bg.riv',
               //'assets/earth_loading.riv',
-              'assets/404_purple.riv',
+              Images.rive404,
               //'assets/cat_loading.riv',
               stateMachines: [
                 // 'Loading Final - State Machine 1', //the name of the animation displayed at the top.

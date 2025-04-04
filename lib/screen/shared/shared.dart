@@ -5,19 +5,15 @@ import 'package:Trendify/screen/cart_wishlist/cart_screen.dart';
 import 'package:Trendify/screen/cart_wishlist/wish_list_screen.dart';
 import 'package:Trendify/screen/orders_payment/orders_screen.dart';
 import 'package:Trendify/screen/products/products_screen.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-final url =
-    //'http://192.168.29.93:3000'
-    'https://fs-ecommerce-app.onrender.com';
 
 class NavigationExample extends StatefulWidget {
   const NavigationExample({super.key, this.token});
 
-  final token;
+  final dynamic token;
 
   @override
   State<NavigationExample> createState() => _NavigationExampleState();

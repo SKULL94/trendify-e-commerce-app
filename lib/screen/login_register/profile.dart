@@ -1,7 +1,7 @@
 import 'package:Trendify/screen/login_register/login.dart';
 import 'package:Trendify/screen/shared/under_contruction.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

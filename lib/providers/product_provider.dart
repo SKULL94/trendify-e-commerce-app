@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Trendify/screen/shared/shared.dart';
+import 'package:Trendify/api_service/base_api.dart';
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import 'package:http/http.dart' as http;
@@ -48,7 +48,9 @@ class ProductProvider with ChangeNotifier {
     while (retries < maxRetries) {
       try {
         print("products api hit once"); // change the delay time accordingly.
-        final response = await http.get(Uri.parse('$url/products'));
+        final response = await http.get(
+          Uri.parse('${ApiService.baseUrl}/products'),
+        );
         if (response.statusCode == 200) {
           final jsonResponse = jsonDecode(response.body);
           final jsonData = jsonResponse['products'];
@@ -94,7 +96,9 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> searchProduct(searchQuery) async {
-    final response = await http.get(Uri.parse('$url/search/$searchQuery'));
+    final response = await http.get(
+      Uri.parse('${ApiService.baseUrl}/search/$searchQuery'),
+    );
     var jsonResponse = jsonDecode(response.body);
     // need to give status in the backend.
     if (jsonResponse['searchResults'] != null) {
@@ -112,7 +116,9 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> categoryProduct(categoryName) async {
-    final response = await http.get(Uri.parse('$url/category/$categoryName'));
+    final response = await http.get(
+      Uri.parse('${ApiService.baseUrl}/category/$categoryName'),
+    );
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       final jsonData = jsonResponse['products'];

@@ -2,8 +2,9 @@ import 'package:Trendify/models/wish_list.dart';
 import 'package:Trendify/providers/cart_provider.dart';
 import 'package:Trendify/providers/wish_list_provider.dart';
 import 'package:Trendify/screen/cart_wishlist/shipping_address_screen.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/images.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -431,7 +432,7 @@ class _CartScreenState extends State<CartScreen> {
         SizedBox(
           height: getHeight(context, 500),
           child: rive.RiveAnimation.asset(
-            'assets/empty_basket.riv',
+            Images.basket,
             stateMachines: ['Adding to basket - State Machine 1'],
             onInit: (rive.Artboard artboard) {
               var controller = rive.StateMachineController.fromArtboard(

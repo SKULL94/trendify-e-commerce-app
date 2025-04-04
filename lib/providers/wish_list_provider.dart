@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Trendify/api_service/base_api.dart';
 import 'package:Trendify/models/wish_list.dart';
-import 'package:Trendify/screen/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,7 +41,7 @@ class WishListProvider with ChangeNotifier {
       "products": [prodId],
     };
     final response = await http.post(
-      Uri.parse('$url/wishlist'),
+      Uri.parse('${ApiService.baseUrl}/wishlist'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(reqBody),
     );
@@ -51,7 +51,7 @@ class WishListProvider with ChangeNotifier {
 
   Future<bool> removeWishlist(user, prodId) async {
     final response = await http.delete(
-      Uri.parse('$url/wishlist/$user/$prodId'),
+      Uri.parse('${ApiService.baseUrl}/wishlist/$user/$prodId'),
     );
     var jsonReponse = jsonDecode(response.body);
     return jsonReponse['status'];
@@ -63,7 +63,9 @@ class WishListProvider with ChangeNotifier {
     const int delay = 500;
     while (true) {
       try {
-        final response = await http.get(Uri.parse('$url/wishlist/$user'));
+        final response = await http.get(
+          Uri.parse('${ApiService.baseUrl}/wishlist/$user'),
+        );
         if (response.statusCode == 200) {
           final jsonResponse = jsonDecode(response.body);
           final jsonData = jsonResponse['products'];

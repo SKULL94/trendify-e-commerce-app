@@ -8,8 +8,8 @@ import 'package:Trendify/screen/cart_wishlist/cart_screen.dart';
 import 'package:Trendify/screen/cart_wishlist/wish_list_screen.dart';
 import 'package:Trendify/screen/products/single_product_screen.dart';
 import 'package:Trendify/screen/shared/shared.dart';
-import 'package:Trendify/utilis/custom_text.dart';
-import 'package:Trendify/utilis/media_query.dart';
+import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -180,6 +180,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                                     fontSize: 12,
                                                   ),
                                                   onPressed: () async {
+                                                    final currentContext =
+                                                        context;
                                                     final cartProduct =
                                                         CartProduct(
                                                           id: item.id,
@@ -200,12 +202,17 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                                       Duration(
                                                         milliseconds: 500,
                                                       ),
-                                                      () => showCustomSnackBar(
-                                                        context,
-                                                        status
-                                                            ? "Product added to cart!"
-                                                            : "Failed to add to cart!",
-                                                      ),
+                                                      () {
+                                                        if (currentContext
+                                                            .mounted) {
+                                                          showCustomSnackBar(
+                                                            currentContext,
+                                                            status
+                                                                ? "Product added to cart!"
+                                                                : "Failed to add to cart!",
+                                                          );
+                                                        }
+                                                      },
                                                     );
                                                   },
                                                 ),
@@ -289,6 +296,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                         color: isFavorite ? Colors.red : null,
                                       ),
                                       onPressed: () async {
+                                        final currentContext = context;
                                         if (isFavorite) {
                                           final status = await wishListProvider
                                               .removeProduct(
@@ -297,12 +305,16 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                               );
                                           Future.delayed(
                                             Duration(milliseconds: 500),
-                                            () => showCustomSnackBar(
-                                              context,
-                                              status
-                                                  ? "Product removed from wishlist!"
-                                                  : "Failed to remove from wishlist!",
-                                            ),
+                                            () {
+                                              if (currentContext.mounted) {
+                                                showCustomSnackBar(
+                                                  currentContext,
+                                                  status
+                                                      ? "Product removed from wishlist!"
+                                                      : "Failed to remove from wishlist!",
+                                                );
+                                              }
+                                            },
                                           );
                                         } else {
                                           final wishlistProduct = WishListItems(
@@ -320,12 +332,16 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                               );
                                           Future.delayed(
                                             Duration(milliseconds: 500),
-                                            () => showCustomSnackBar(
-                                              context,
-                                              status
-                                                  ? "Product added to wishlist!"
-                                                  : "Failed to add to wishlist!",
-                                            ),
+                                            () {
+                                              if (currentContext.mounted) {
+                                                showCustomSnackBar(
+                                                  currentContext,
+                                                  status
+                                                      ? "Product added to wishlist!"
+                                                      : "Failed to add to wishlist!",
+                                                );
+                                              }
+                                            },
                                           );
                                         }
                                       },
@@ -645,10 +661,12 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           _originalProducts.where((product) {
             if (_newArrivals && !product.isNew) return false;
             if (product.price < _priceRange.start ||
-                product.price > _priceRange.end)
+                product.price > _priceRange.end) {
               return false;
-            if (_selectedRating != null && product.rating < _selectedRating!)
+            }
+            if (_selectedRating != null && product.rating < _selectedRating!) {
               return false;
+            }
             return true;
           }).toList();
 
