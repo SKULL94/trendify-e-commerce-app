@@ -156,6 +156,8 @@ class _SearchedProductsScreenState extends State<SearchedProductsScreen> {
                                                       Colors.redAccent.shade200,
                                                 ),
                                                 onPressed: () async {
+                                                  final currentContext =
+                                                      context;
                                                   final cartProduct =
                                                       CartProduct(
                                                         id: item.id,
@@ -175,12 +177,15 @@ class _SearchedProductsScreenState extends State<SearchedProductsScreen> {
                                                   Future.delayed(
                                                     Duration(milliseconds: 500),
                                                     () {
-                                                      showCustomSnackBar(
-                                                        context,
-                                                        status
-                                                            ? "Product added to cart!"
-                                                            : "Failed to add to cart!",
-                                                      );
+                                                      if (currentContext
+                                                          .mounted) {
+                                                        showCustomSnackBar(
+                                                          currentContext,
+                                                          status
+                                                              ? "Product added to cart!"
+                                                              : "Failed to add to cart!",
+                                                        );
+                                                      }
                                                     },
                                                   );
                                                 },
@@ -251,6 +256,7 @@ class _SearchedProductsScreenState extends State<SearchedProductsScreen> {
                                       color: isFavorite ? Colors.red : null,
                                     ),
                                     onPressed: () async {
+                                      final currentContext = context;
                                       if (isFavorite) {
                                         final status = await wishListProvider
                                             .removeProduct(
@@ -260,15 +266,18 @@ class _SearchedProductsScreenState extends State<SearchedProductsScreen> {
                                         Future.delayed(
                                           Duration(milliseconds: 500),
                                           () {
-                                            showCustomSnackBar(
-                                              context,
-                                              status
-                                                  ? "Product removed from wishlist!"
-                                                  : "Failed to remove from wishlist!",
-                                            );
+                                            if (currentContext.mounted) {
+                                              showCustomSnackBar(
+                                                currentContext,
+                                                status
+                                                    ? "Product removed from wishlist!"
+                                                    : "Failed to remove from wishlist!",
+                                              );
+                                            }
                                           },
                                         );
                                       } else {
+                                        final currentContext = context;
                                         final wishlistProduct = WishListItems(
                                           id: item.id,
                                           title: item.title,
@@ -286,12 +295,14 @@ class _SearchedProductsScreenState extends State<SearchedProductsScreen> {
                                         Future.delayed(
                                           Duration(milliseconds: 500),
                                           () {
-                                            showCustomSnackBar(
-                                              context,
-                                              status
-                                                  ? "Product added to wishlist!"
-                                                  : "Failed to add to wishlist!",
-                                            );
+                                            if (currentContext.mounted) {
+                                              showCustomSnackBar(
+                                                currentContext,
+                                                status
+                                                    ? "Product added to wishlist!"
+                                                    : "Failed to add to wishlist!",
+                                              );
+                                            }
                                           },
                                         );
                                       }

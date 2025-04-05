@@ -23,6 +23,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _registerUser() async {
+    final currentContext = context;
     if (_emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
       var regBody = {
@@ -37,25 +38,32 @@ class RegistrationScreenState extends State<RegistrationScreen> {
       );
       var jsonReponse = jsonDecode(response.body);
       if (jsonReponse['status']) {
-        showCustomSnackBar(
-          context,
-          'Signed in successfully!',
-          color: Colors.green.shade600,
-        );
+        if (currentContext.mounted) {
+          showCustomSnackBar(
+            currentContext,
+            'Signed in successfully!',
+            color: Colors.green.shade600,
+          );
+        }
+
         await Future.delayed(const Duration(seconds: 10));
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
+        if (currentContext.mounted) {
+          Navigator.pushReplacement(
+            currentContext,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }
       } else {
         _emailController.clear();
         _passwordController.clear();
         _userNameController.clear();
-        showCustomSnackBar(
-          context,
-          'Something went wrong, please try again!',
-          color: Colors.red,
-        );
+        if (currentContext.mounted) {
+          showCustomSnackBar(
+            currentContext,
+            'Something went wrong, please try again!',
+            color: Colors.red,
+          );
+        }
       }
     }
   }

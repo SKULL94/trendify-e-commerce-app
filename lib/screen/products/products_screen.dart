@@ -332,6 +332,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                                   )
                                                                   : TextButton(
                                                                     onPressed: () async {
+                                                                      final currentContext =
+                                                                          context;
                                                                       final cartProduct = CartProduct(
                                                                         id:
                                                                             product.id,
@@ -355,12 +357,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                                           milliseconds:
                                                                               500,
                                                                         ),
-                                                                        () => showCustomSnackBar(
-                                                                          context,
-                                                                          status
-                                                                              ? "Product added to cart!"
-                                                                              : "Failed to add to cart!",
-                                                                        ),
+                                                                        () {
+                                                                          if (currentContext
+                                                                              .mounted) {
+                                                                            showCustomSnackBar(
+                                                                              currentContext,
+                                                                              status
+                                                                                  ? "Product added to cart!"
+                                                                                  : "Failed to add to cart!",
+                                                                            );
+                                                                          }
+                                                                        },
                                                                       );
                                                                     },
                                                                     child: const CustomText(
@@ -421,6 +428,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                         : null,
                                               ),
                                               onPressed: () async {
+                                                final currentContext = context;
                                                 if (isFavorite) {
                                                   final status =
                                                       await wishListProvider
@@ -432,12 +440,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                     const Duration(
                                                       milliseconds: 500,
                                                     ),
-                                                    () => showCustomSnackBar(
-                                                      context,
-                                                      status
-                                                          ? "Product removed from wishlist!"
-                                                          : "Failed to remove from wishlist!",
-                                                    ),
+                                                    () {
+                                                      if (currentContext
+                                                          .mounted) {
+                                                        showCustomSnackBar(
+                                                          currentContext,
+                                                          status
+                                                              ? "Product removed from wishlist!"
+                                                              : "Failed to remove from wishlist!",
+                                                        );
+                                                      }
+                                                    },
                                                   );
                                                 } else {
                                                   final wishlistProduct =
@@ -461,12 +474,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                     const Duration(
                                                       milliseconds: 500,
                                                     ),
-                                                    () => showCustomSnackBar(
-                                                      context,
-                                                      status
-                                                          ? "Product added to wishlist!"
-                                                          : "Failed to add to wishlist!",
-                                                    ),
+                                                    () {
+                                                      if (currentContext
+                                                          .mounted) {
+                                                        showCustomSnackBar(
+                                                          currentContext,
+                                                          status
+                                                              ? "Product added to wishlist!"
+                                                              : "Failed to add to wishlist!",
+                                                        );
+                                                      }
+                                                    },
                                                   );
                                                 }
                                               },
@@ -603,6 +621,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                     color: isFavorite ? Colors.red : null,
                                   ),
                                   onPressed: () async {
+                                    final currentContext = context;
                                     if (isFavorite) {
                                       final status = await wishListProvider
                                           .removeProduct(
@@ -611,14 +630,19 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                           );
                                       Future.delayed(
                                         const Duration(milliseconds: 500),
-                                        () => showCustomSnackBar(
-                                          context,
-                                          status
-                                              ? "Product removed from wishlist!"
-                                              : "Failed to remove from wishlist!",
-                                        ),
+                                        () {
+                                          if (currentContext.mounted) {
+                                            showCustomSnackBar(
+                                              currentContext,
+                                              status
+                                                  ? "Product removed from wishlist!"
+                                                  : "Failed to remove from wishlist!",
+                                            );
+                                          }
+                                        },
                                       );
                                     } else {
+                                      final currentContext = context;
                                       final wishlistProduct = WishListItems(
                                         id: product.id,
                                         title: product.title,
@@ -634,12 +658,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                           );
                                       Future.delayed(
                                         const Duration(milliseconds: 500),
-                                        () => showCustomSnackBar(
-                                          context,
-                                          status
-                                              ? "Product added to wishlist!"
-                                              : "Failed to add to wishlist!",
-                                        ),
+                                        () {
+                                          if (currentContext.mounted) {
+                                            showCustomSnackBar(
+                                              currentContext,
+                                              status
+                                                  ? "Product added to wishlist!"
+                                                  : "Failed to add to wishlist!",
+                                            );
+                                          }
+                                        },
                                       );
                                     }
                                   },

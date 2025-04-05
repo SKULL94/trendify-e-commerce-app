@@ -28,7 +28,7 @@ class LoginScreenState extends State<LoginScreen> {
   Timer? typingTimer;
   final FocusNode _passwordFocusNode = FocusNode();
   bool _isLoading = false;
-  var myToken;
+  dynamic myToken;
 
   @override
   void initState() {
@@ -49,6 +49,7 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> loginUser() async {
+    final currentContext = context;
     if (_emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
       try {
@@ -67,37 +68,44 @@ class LoginScreenState extends State<LoginScreen> {
           await prefs.setString('token', myToken);
 
           _changeAnimation('success');
-          showCustomSnackBar(
-            context,
-            'Login Successful!!',
-            color: Colors.green.shade600,
-          );
-
+          if (currentContext.mounted) {
+            showCustomSnackBar(
+              currentContext,
+              'Login Successful!!',
+              color: Colors.green.shade600,
+            );
+          }
           setState(() => _isLoading = true);
           await Future.delayed(const Duration(seconds: 6));
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NavigationExample(token: myToken),
-            ),
-          );
+          if (currentContext.mounted) {
+            Navigator.pushReplacement(
+              currentContext,
+              MaterialPageRoute(
+                builder: (context) => NavigationExample(token: myToken),
+              ),
+            );
+          }
         } else {
           throw Exception('No token received');
         }
       } on FirebaseAuthException catch (e) {
         _changeAnimation('fail');
-        showCustomSnackBar(
-          context,
-          _getFirebaseErrorText(e.code),
-          color: Colors.red,
-        );
+        if (currentContext.mounted) {
+          showCustomSnackBar(
+            currentContext,
+            _getFirebaseErrorText(e.code),
+            color: Colors.red,
+          );
+        }
       } catch (e) {
         _changeAnimation('fail');
-        showCustomSnackBar(
-          context,
-          'Login failed: ${e.toString()}',
-          color: Colors.red,
-        );
+        if (currentContext.mounted) {
+          showCustomSnackBar(
+            currentContext,
+            'Login failed: ${e.toString()}',
+            color: Colors.red,
+          );
+        }
       }
     }
   }
@@ -145,8 +153,9 @@ class LoginScreenState extends State<LoginScreen> {
                         artboard,
                         _currentAnimation,
                       );
-                      if (controller != null)
+                      if (controller != null) {
                         artboard.addController(controller);
+                      }
                     },
                   ),
                 ),

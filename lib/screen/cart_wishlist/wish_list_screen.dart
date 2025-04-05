@@ -178,6 +178,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                       ),
                                     ),
                                     onPressed: () async {
+                                      final currentContext = context;
                                       final cartProduct = CartProduct(
                                         id: item.id,
                                         title: item.title,
@@ -191,12 +192,14 @@ class _WishListScreenState extends State<WishListScreen> {
                                       Future.delayed(
                                         Duration(milliseconds: 500),
                                         () {
-                                          showCustomSnackBar(
-                                            context,
-                                            status
-                                                ? "Product added to cart!"
-                                                : "Failed to add to cart!",
-                                          );
+                                          if (currentContext.mounted) {
+                                            showCustomSnackBar(
+                                              currentContext,
+                                              status
+                                                  ? "Product added to cart!"
+                                                  : "Failed to add to cart!",
+                                            );
+                                          }
                                         },
                                       );
                                       wishListProvider.removeProduct(
@@ -216,22 +219,22 @@ class _WishListScreenState extends State<WishListScreen> {
                                     color: Colors.grey.shade400,
                                   ),
                                   onPressed: () async {
+                                    final currentContext = context;
                                     final status = await wishListProvider
                                         .removeProduct(
                                           item.id,
                                           "checkinglogin@gmail.com",
                                         );
-                                    Future.delayed(
-                                      Duration(milliseconds: 500),
-                                      () {
+                                    Future.delayed(Duration(milliseconds: 500), () {
+                                      if (currentContext.mounted) {
                                         showCustomSnackBar(
-                                          context,
+                                          currentContext,
                                           status
                                               ? "Product removed from wishlist!"
                                               : "Failed to remove from wishlist!",
                                         );
-                                      },
-                                    );
+                                      }
+                                    });
                                   },
                                 ),
                               ),

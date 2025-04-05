@@ -6,10 +6,10 @@ class TopNotification extends StatefulWidget {
   const TopNotification({super.key});
 
   @override
-  _TopNotificationState createState() => _TopNotificationState();
+  TopNotificationState createState() => TopNotificationState();
 }
 
-class _TopNotificationState extends State<TopNotification> {
+class TopNotificationState extends State<TopNotification> {
   bool _isVisible = false;
 
   void showNotification() {

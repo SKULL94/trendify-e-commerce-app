@@ -37,42 +37,49 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                 shape: const RoundedRectangleBorder(),
               ),
               onPressed: () async {
+                final currentContext = context;
                 double totalQuantity = cartItems.fold(0, (a, b) => a + b.price);
                 final status = await initPaymentSheet(totalQuantity);
                 print(status);
                 if (status == "success") {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) =>
-                              OrderStatusSplashScreen(status: 'success'),
-                    ),
-                  );
-                  Future.delayed(const Duration(milliseconds: 2000), () {
-                    Navigator.pushReplacement(
-                      context,
+                  if (currentContext.mounted) {
+                    Navigator.push(
+                      currentContext,
                       MaterialPageRoute(
-                        builder: (context) => const OrdersPage(),
+                        builder:
+                            (currentContext) =>
+                                OrderStatusSplashScreen(status: 'success'),
                       ),
                     );
+                  }
+
+                  Future.delayed(const Duration(milliseconds: 2000), () {
+                    if (currentContext.mounted) {
+                      Navigator.pushReplacement(
+                        currentContext,
+                        MaterialPageRoute(
+                          builder: (currentContext) => const OrdersPage(),
+                        ),
+                      );
+                    }
                   });
                 } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) =>
-                              OrderStatusSplashScreen(status: 'failed'),
-                    ),
-                  );
-                  Future.delayed(const Duration(milliseconds: 2000), () {
-                    Navigator.pushReplacement(
-                      context,
+                  if (currentContext.mounted) {
+                    Navigator.push(
+                      currentContext,
                       MaterialPageRoute(
-                        builder: (context) => const CartScreen(),
+                        builder:
+                            (_) => OrderStatusSplashScreen(status: 'failed'),
                       ),
                     );
+                  }
+                  Future.delayed(const Duration(milliseconds: 2000), () {
+                    if (currentContext.mounted) {
+                      Navigator.pushReplacement(
+                        currentContext,
+                        MaterialPageRoute(builder: (_) => const CartScreen()),
+                      );
+                    }
                   });
                 }
               },
