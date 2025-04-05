@@ -1,10 +1,8 @@
-import 'package:Trendify/api_service/base_api.dart';
+import 'package:Trendify/api_service/payment.dart';
 import 'package:Trendify/utils/custom_text.dart';
 import 'package:Trendify/utils/media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class CustomPaymentPage extends StatefulWidget {
   const CustomPaymentPage({super.key});
@@ -14,52 +12,13 @@ class CustomPaymentPage extends StatefulWidget {
 }
 
 class CustomPaymentPageState extends State<CustomPaymentPage> {
-  CardFieldInputDetails? _cardDetails;
+  final PaymentController controller = PaymentController();
 
-  Future<void> payNow() async {
-    try {
-      if (_cardDetails == null || !_cardDetails!.complete) {
-        print("Enter valid card details");
-        return;
-      }
-
-      final response = await http.post(
-        Uri.parse('${ApiService.baseUrl}/createpayment'),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": "newcustomer@gmail.com",
-          "name": "newcustomer",
-          "amount": 5000,
-        }),
-      );
-      final paymentData = jsonDecode(response.body);
-
-      if (paymentData['error'] == true) {
-        print("Error: ${paymentData['message']}");
-        return;
-      }
-
-      final paymentIntent = paymentData['paymentIntent'];
-      final billingDetails = BillingDetails(
-        address: Address(
-          country: 'IN',
-          city: 'Gurgaon',
-          line1: 'addr1',
-          line2: 'addr2',
-          postalCode: '122001',
-          state: 'Gurugram',
-        ),
-      );
-
-      await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: paymentIntent,
-        data: PaymentMethodParams.card(
-          paymentMethodData: PaymentMethodData(billingDetails: billingDetails),
-        ),
-      );
+  void _handlePayNow() async {
+    final error = await controller.payNow();
+    if (error != null) {
+    } else {
       print("Payment Successful!");
-    } catch (e) {
-      print("Payment Error: $e");
     }
   }
 
@@ -78,13 +37,16 @@ class CustomPaymentPageState extends State<CustomPaymentPage> {
         child: Column(
           children: [
             CardField(
-              onCardChanged: (card) => setState(() => _cardDetails = card),
+              onCardChanged:
+                  (card) => setState(() {
+                    controller.updateCardDetails(card);
+                  }),
             ),
             SizedBox(height: getHeight(context, 20)),
             SizedBox(
               width: getWidth(context, 200),
               child: ElevatedButton(
-                onPressed: payNow,
+                onPressed: _handlePayNow,
                 child: const CustomText(
                   text: "Pay Now",
                   color: Colors.white,

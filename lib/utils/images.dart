@@ -6,4 +6,5 @@ class Images {
   static const String catLoading = 'assets/cat_loading.riv';
   static const String cat = 'assets/cat.png';
   static const String basket = 'assets/empty_basket.riv';
+  static const String kitty = 'assets/kitty.riv';
 }

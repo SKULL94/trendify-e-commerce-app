@@ -23,7 +23,7 @@ class _WishListScreenState extends State<WishListScreen> {
       appBar: AppBar(
         title: Padding(
           padding: EdgeInsets.only(
-            top: getHeight(context, 16.0),
+            top: getHeight(context, 16),
             bottom: getHeight(context, 16),
           ),
           child: Center(child: CustomText(text: 'My wish list')),
