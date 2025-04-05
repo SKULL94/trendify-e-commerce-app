@@ -1,3 +1,4 @@
+import 'package:Trendify/api_service/product_service.dart';
 import 'package:Trendify/providers/wish_list_provider.dart';
 import 'package:Trendify/screen/shared/shared.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ProductProvider()),
+        ChangeNotifierProvider(
+          create:
+              (context) => ProductProvider(productService: ProductService()),
+        ),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => WishListProvider()),
       ],

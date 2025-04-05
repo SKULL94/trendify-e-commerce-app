@@ -1,3 +1,4 @@
+import 'package:Trendify/custom_widgets/wishlist_screen_widget.dart';
 import 'package:Trendify/models/cart.dart';
 import 'package:Trendify/providers/cart_provider.dart';
 import 'package:Trendify/providers/wish_list_provider.dart';
@@ -7,7 +8,6 @@ import 'package:Trendify/utils/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rive/rive.dart' as rive;
 
 class WishListScreen extends StatefulWidget {
   const WishListScreen({super.key});
@@ -33,7 +33,7 @@ class _WishListScreenState extends State<WishListScreen> {
         builder: (context, wishListProvider, child) {
           final wishListItems = wishListProvider.wishListItems;
           return wishListItems.isEmpty
-              ? Center(child: _emptyWishlist())
+              ? Center(child: emptyWishlist(context))
               : Consumer<CartProvider>(
                 builder: (context, cartProvider, child) {
                   return Padding(
@@ -70,7 +70,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                         padding: EdgeInsets.only(
                                           right: getWidth(context, 25),
                                           left: getWidth(context, 25),
-                                          bottom: getHeight(context, 25),
+
                                           top: getHeight(context, 25),
                                         ),
                                         child: CachedNetworkImage(
@@ -82,7 +82,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                       ),
                                       Positioned(
                                         left: getWidth(context, 16),
-                                        bottom: -getHeight(context, 11),
+                                        bottom: getHeight(context, 11),
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                             bottom: getHeight(context, 8),
@@ -167,7 +167,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: getHeight(context, 3)),
+
                                   Divider(height: getHeight(context, 1)),
                                   TextButton(
                                     child: Center(
@@ -248,39 +248,6 @@ class _WishListScreenState extends State<WishListScreen> {
               );
         },
       ),
-    );
-  }
-
-  Widget _emptyWishlist() {
-    return Column(
-      children: [
-        SizedBox(
-          height: getHeight(context, 500),
-          child: rive.RiveAnimation.asset(
-            'assets/kitty.riv',
-            stateMachines: ['kitty'],
-            onInit: (rive.Artboard artboard) {
-              var controller = rive.StateMachineController.fromArtboard(
-                artboard,
-                'kitty',
-              );
-              if (controller != null) {
-                artboard.addController(controller);
-                controller.isActive = true;
-              }
-            },
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: CustomText(
-            text: 'Pspsps... your wishlist is empty',
-            fontSize: 18,
-            color: Colors.blueGrey,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
     );
   }
 }

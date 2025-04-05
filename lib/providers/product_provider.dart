@@ -1,132 +1,66 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:Trendify/api_service/base_api.dart';
+import 'package:Trendify/api_service/product_service.dart';
 import 'package:flutter/material.dart';
-import '../models/product.dart';
-import 'package:http/http.dart' as http;
+import 'package:Trendify/models/product.dart';
 
-//android/app/src/main/res/values
 class ProductProvider with ChangeNotifier {
+  final ProductService productService;
   List<Product> _products = [];
-
-  List<Product> get products {
-    return [..._products];
-  }
-
-  //popular products:
   List<Product> _populuarProducts = [];
-
-  List<Product> get popularProducts {
-    return [..._populuarProducts];
-  }
-
-  //newly added products:
   List<Product> _newlyAddedProducts = [];
-
-  List<Product> get newlyAddedProducts {
-    return [..._newlyAddedProducts];
-  }
-
-  // search products:
   List<Product> _searchProducts = [];
-
-  List<Product> get searchProducts {
-    return [..._searchProducts];
-  }
-
-  // category products:
   List<Product> _categoryProducts = [];
 
-  List<Product> get categoryProducts {
-    return [..._categoryProducts];
-  }
+  ProductProvider({required this.productService});
+
+  List<Product> get products => [..._products];
+  List<Product> get popularProducts => [..._populuarProducts];
+  List<Product> get newlyAddedProducts => [..._newlyAddedProducts];
+  List<Product> get searchProducts => [..._searchProducts];
+  List<Product> get categoryProducts => [..._categoryProducts];
 
   Future<void> fetchProducts() async {
-    int retries = 0;
-    const int maxRetries = 4;
-    const int delay = 10;
-    while (retries < maxRetries) {
-      try {
-        print("products api hit once"); // change the delay time accordingly.
-        final response = await http.get(
-          Uri.parse('${ApiService.baseUrl}/products'),
-        );
-        if (response.statusCode == 200) {
-          final jsonResponse = jsonDecode(response.body);
-          final jsonData = jsonResponse['products'];
-          _products.clear();
-          _products =
-              jsonData
-                  .map<Product>((product) => Product.fromJson(product))
-                  .toList();
-          //popular products:
-          final selectiveProducts =
-              jsonData
-                  .where((product) => jsonData.indexOf(product) % 2 != 0)
-                  .toList();
-          _populuarProducts =
-              selectiveProducts
-                  .map<Product>((product) => Product.popularProduct(product))
-                  .toList();
-
-          //newly added products:
-          _newlyAddedProducts =
-              _products
-                  .asMap()
-                  .entries
-                  .where((entry) => entry.key % 2 == 0)
-                  .map((entry) => entry.value)
-                  .toList();
-          // _newlyAddedProducts =
-
-          notifyListeners();
-          retries = maxRetries;
-          return;
-        } else {
-          //retries++;
-          await Future.delayed(Duration(seconds: delay));
-        }
-      } on SocketException {
-        // Handle SocketException, retry
-        //retries++;
-        await Future.delayed(Duration(seconds: delay));
-      }
-    }
-    throw Exception('Failed to fetch data after $maxRetries retries');
-  }
-
-  Future<void> searchProduct(searchQuery) async {
-    final response = await http.get(
-      Uri.parse('${ApiService.baseUrl}/search/$searchQuery'),
-    );
-    var jsonResponse = jsonDecode(response.body);
-    // need to give status in the backend.
-    if (jsonResponse['searchResults'] != null) {
-      final jsonData = jsonResponse['searchResults'];
-      _searchProducts.clear();
-      _searchProducts =
-          jsonData
-              .map<Product>((product) => Product.searchProduct(product))
+    try {
+      final products = await productService.fetchProducts();
+      _products = products;
+      // Filter popular products (every other product starting from index 1)
+      _populuarProducts =
+          products
+              .asMap()
+              .entries
+              .where((entry) => entry.key % 2 != 0)
+              .map((entry) => entry.value)
               .toList();
-
-      // print('in the search product function');
-      // print(_searchProducts);
+      // Filter newly added products (every other product starting from index 0)
+      _newlyAddedProducts =
+          products
+              .asMap()
+              .entries
+              .where((entry) => entry.key % 2 == 0)
+              .map((entry) => entry.value)
+              .toList();
       notifyListeners();
+    } catch (e) {
+      throw Exception('Failed to fetch products: $e');
     }
   }
 
-  Future<void> categoryProduct(categoryName) async {
-    final response = await http.get(
-      Uri.parse('${ApiService.baseUrl}/category/$categoryName'),
-    );
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      final jsonData = jsonResponse['products'];
-      _categoryProducts =
-          jsonData
-              .map<Product>((product) => Product.fromJson(product))
-              .toList();
+  Future<void> searchProduct(String searchQuery) async {
+    try {
+      final products = await productService.searchProducts(searchQuery);
+      _searchProducts = products;
       notifyListeners();
+    } catch (e) {
+      throw Exception('Failed to search products: $e');
+    }
+  }
+
+  Future<void> categoryProduct(String categoryName) async {
+    try {
+      final products = await productService.fetchCategoryProducts(categoryName);
+      _categoryProducts = products;
+      notifyListeners();
+    } catch (e) {
+      throw Exception('Failed to fetch category products: $e');
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:Trendify/screen/cart_wishlist/cart_screen.dart';
 import 'package:Trendify/screen/orders_payment/orders_screen.dart';
 import 'package:Trendify/screen/orders_payment/splash_screen.dart';
 import 'package:Trendify/utils/custom_text.dart';
+import 'package:Trendify/utils/helper_functions.dart';
 import 'package:Trendify/utils/media_query.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
